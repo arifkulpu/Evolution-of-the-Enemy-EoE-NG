@@ -1,5 +1,6 @@
 #include "LevelSystem.h"
 #include "Settings.h"
+#include <random>
 
 namespace LevelSystem
 {
@@ -175,11 +176,21 @@ namespace LevelSystem
                         multiplier = settings->fBossMultiplier;
                     }
 
-                    float finalHealthGain = levelDiff * healthGain * multiplier;
-                    float finalMagickaGain = levelDiff * magickaGain * multiplier;
-                    float finalStaminaGain = levelDiff * staminaGain * multiplier;
+                    // Tier/Bracket: her 10 seviyede bonus çarpan
+                    float tierMultiplier = 1.0f + (static_cast<float>(playerLevel / 10) * settings->fTierMultiplierPer10Levels);
+
+                    // Rastgele çarpan: her NPC'ye farklı güç
+                    static std::mt19937 rng(std::random_device{}());
+                    std::uniform_real_distribution<float> dist(settings->fRandomMin, settings->fRandomMax);
+                    float randomMultiplier = dist(rng);
+
+                    float combinedMult = multiplier * tierMultiplier * randomMultiplier;
+
+                    float finalHealthGain = levelDiff * healthGain * combinedMult;
+                    float finalMagickaGain = levelDiff * magickaGain * combinedMult;
+                    float finalStaminaGain = levelDiff * staminaGain * combinedMult;
                     
-                    float resistGain = levelDiff * multiplier;
+                    float resistGain = levelDiff * combinedMult;
                     float damageResistGain = resistGain * settings->fDamageResistPerLevel;
                     float magicResistGain = resistGain * settings->fMagicResistPerLevel;
                     

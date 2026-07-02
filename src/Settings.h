@@ -26,6 +26,13 @@ public:
     // We will assume 0.05f means +5% damage per level.
     float fAttackDamageMultPerLevel{0.05f};
     float fSpellPowerModPerLevel{0.05f};
+    
+    // Randomness settings (variance applied to stat gains)
+    float fRandomMin{0.8f};
+    float fRandomMax{1.2f};
+    
+    // Tier/Bracket multiplier: bonus per 10 player levels
+    float fTierMultiplierPer10Levels{0.10f};
 
 private:
     Settings() = default;

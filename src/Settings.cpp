@@ -51,6 +51,9 @@ void Settings::ParseLine(const std::string& line)
         else if (key == "fMagicResistPerLevel") fMagicResistPerLevel = std::stof(valStr);
         else if (key == "fAttackDamageMultPerLevel") fAttackDamageMultPerLevel = std::stof(valStr);
         else if (key == "fSpellPowerModPerLevel") fSpellPowerModPerLevel = std::stof(valStr);
+        else if (key == "fRandomMin") fRandomMin = std::stof(valStr);
+        else if (key == "fRandomMax") fRandomMax = std::stof(valStr);
+        else if (key == "fTierMultiplierPer10Levels") fTierMultiplierPer10Levels = std::stof(valStr);
     } catch (...) {
         SKSE::log::warn("Failed to parse setting: {} = {}", key, valStr);
     }
