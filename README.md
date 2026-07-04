@@ -1,4 +1,4 @@
-# Dynamic NPC Level System
+# Evolution of the Enemy (EoE) NG
 
 ## Türkçe (Turkish)
 
@@ -107,7 +107,7 @@ fTierMultiplierPer10Levels = 0.10
 ## English
 
 ### Purpose and Features
-**Dynamic NPC Level System** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough. Even at high levels, enemies will keep you on your toes — no more one-shotting everything!
+**Evolution of the Enemy (EoE) NG** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough. Even at high levels, enemies will keep you on your toes — no more one-shotting everything!
 
 With this mod:
 - Enemy stats are dynamically increased based on the level difference with the player.
