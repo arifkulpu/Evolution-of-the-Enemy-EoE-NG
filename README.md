@@ -60,7 +60,7 @@ Oyuncunun seviyesi her 10 levelde bir kademe atlayarak NPC'lere ek bonus çarpan
 Her NPC'ye buff uygulanırken **%80 ile %120** arasında rastgele bir çarpan atanır. Böylece aynı seviyedeki iki haydut bile farklı güçte olur — her savaş farklı bir deneyim sunar!
 
 ### INI ile Ayarlanabilir Değerler
-`Data/SKSE/Plugins/DynamicNPCLevelSystem.ini` dosyasıyla taban değerler özelleştirilebilir. (Bu değerler yukarıdaki sınıf çarpanlarıyla çarpılır).
+`Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini` dosyasıyla taban değerler özelleştirilebilir. (Bu değerler yukarıdaki sınıf çarpanlarıyla çarpılır).
 ```ini
 [General]
 bEnableMod = 1
@@ -98,8 +98,9 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Kurulum
-1. `DynamicNPCLevelSystem.dll` dosyasını `Data/SKSE/Plugins/` klasörüne kopyalayın.
-2. (İsteğe bağlı) `DynamicNPCLevelSystem.ini` dosyası oluşturarak yukarıdaki ayarları özelleştirin.
+- Herhangi bir Mod yönetici ile otomatik kurabilirsiniz.
+1. `EvolutionOfTheEnemyNG.dll` dosyasını `Data/SKSE/Plugins/` klasörüne kopyalayın.
+2. (İsteğe bağlı) `EvolutionOfTheEnemyNG.ini` dosyası oluşturarak yukarıdaki ayarları özelleştirin.
 3. Oyunu SKSE üzerinden başlatın.
 
 ---
@@ -202,8 +203,9 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Installation
-1. Copy `DynamicNPCLevelSystem.dll` to `Data/SKSE/Plugins/`.
-2. (Optional) Create a `DynamicNPCLevelSystem.ini` file to customize the settings listed above.
+- You can install any Mod automatically with a mod manager.
+1. Copy `EvolutionOfTheEnemyNG.dll` to `Data/SKSE/Plugins/`.
+2. (Optional) Create a `EvolutionOfTheEnemyNG.ini` file to customize the settings listed above.
 3. Launch the game through SKSE.
 
 ---
