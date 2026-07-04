@@ -1,9 +1,9 @@
-# Dynamic NPC Level System
+# Evolution of the Enemy (EoE) NG
 
 ## Türkçe (Turkish)
 
 ### Modun Amacı ve Ne İşe Yaradığı
-**Dynamic NPC Level System**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır. Yüksek levellerde bile düşmanlar sizi zorlayacak — artık herkese tek atamazsınız!
+**Evolution of the Enemy (EoE) NG**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır. Yüksek levellerde bile düşmanlar sizi zorlayacak — artık herkese tek atamazsınız!
 
 Bu mod sayesinde:
 - Düşmanların statları, oyuncunun mevcut seviyesine göre dinamik olarak artar.
@@ -12,6 +12,11 @@ Bu mod sayesinde:
 - Mod, düşmanların ellerindeki silah ve büyülere göre **11 farklı sınıf** tespit eder ve onlara uygun bonuslar verir (Örneğin bir suikastçı çok hızlı koşar, bir tankın devasa canı olur).
 - Modlu silahlar (Tüfekler, Mızraklar, Arbaletler) otomatik olarak tanınır ve uygun sınıflara dahil edilir.
 - Boss niteliğindeki düşmanlar ve ejderhalar için özel çarpanlar (%50 bonus) devreye girer.
+
+### Neden Bu Moda İhtiyacınız Var? (Vanilla vs EoE)
+Skyrim'in varsayılan düşman seviye sistemi (Vanilla Scaling) seviye sınırlarına (Level Caps) takılır. Örneğin, oyundaki en güçlü haydut türü olan "Bandit Marauder"ın seviyesi en fazla 25'tir. Siz Level 80 bile olsanız, oyun karşınıza en fazla Level 25 bir haydut çıkarır. Bu durum oyunun ilerleyen aşamalarını çok kolay ve sıkıcı hale getirir.
+
+**EoE NG** ise bu seviye sınırlarını tamamen yok sayar. Eğer siz Level 80 iseniz ve karşınızda Level 25 bir haydut varsa, modumuz aradaki "55 level" farkını hesaplar ve bu farkı haydutun canına, hasarına ve dayanıklılığına **ekstra buff olarak ekler**. Üstelik bu işlemi, haydutun elindeki silaha ve sınıfına göre son derece mantıklı ve dengeli bir şekilde yapar. Böylece düşük seviyeli düşmanlar bile, seviyeniz kaç olursa olsun sizin için her zaman bir tehdit oluşturmaya devam eder!
 
 ### Sınıf Bazlı Stat Artışları (Yeni Sistem)
 Oyun içindeki düşmanlar ellerindeki silahlara göre aşağıdaki 11 sınıftan birine dahil edilir:
@@ -60,7 +65,7 @@ Oyuncunun seviyesi her 10 levelde bir kademe atlayarak NPC'lere ek bonus çarpan
 Her NPC'ye buff uygulanırken **%80 ile %120** arasında rastgele bir çarpan atanır. Böylece aynı seviyedeki iki haydut bile farklı güçte olur — her savaş farklı bir deneyim sunar!
 
 ### INI ile Ayarlanabilir Değerler
-`Data/SKSE/Plugins/DynamicNPCLevelSystem.ini` dosyasıyla taban değerler özelleştirilebilir. (Bu değerler yukarıdaki sınıf çarpanlarıyla çarpılır).
+`Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini` dosyasıyla taban değerler özelleştirilebilir. (Bu değerler yukarıdaki sınıf çarpanlarıyla çarpılır).
 ```ini
 [General]
 bEnableMod = 1
@@ -98,8 +103,8 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Kurulum
-1. `DynamicNPCLevelSystem.dll` dosyasını `Data/SKSE/Plugins/` klasörüne kopyalayın.
-2. (İsteğe bağlı) `DynamicNPCLevelSystem.ini` dosyası oluşturarak yukarıdaki ayarları özelleştirin.
+1. `EvolutionOfTheEnemyNG.dll` dosyasını `Data/SKSE/Plugins/` klasörüne kopyalayın.
+2. (İsteğe bağlı) `EvolutionOfTheEnemyNG.ini` dosyası oluşturarak yukarıdaki ayarları özelleştirin.
 3. Oyunu SKSE üzerinden başlatın.
 
 ---
@@ -107,7 +112,7 @@ fTierMultiplierPer10Levels = 0.10
 ## English
 
 ### Purpose and Features
-**Dynamic NPC Level System** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough. Even at high levels, enemies will keep you on your toes — no more one-shotting everything!
+**Evolution of the Enemy (EoE) NG** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough. Even at high levels, enemies will keep you on your toes — no more one-shotting everything!
 
 With this mod:
 - Enemy stats are dynamically increased based on the level difference with the player.
@@ -116,6 +121,11 @@ With this mod:
 - The mod detects **11 different classes** based on equipped weapons/spells and applies specific stat modifiers (e.g. Assassins run faster, Shield Tanks have massive health).
 - Modded weapons (Rifles, Spears, Crossbows) are automatically detected and mapped to appropriate classes.
 - Bosses and dragons receive a special multiplier (50% bonus) for truly epic battles.
+
+### Why Do You Need This Mod? (Vanilla vs EoE)
+Skyrim's default enemy scaling system is restricted by Level Caps. For example, the strongest bandit type in the game, the "Bandit Marauder", is capped at level 25. Even if you are level 80, the game will at most spawn a level 25 bandit for you. This makes the late game incredibly easy and boring.
+
+**EoE NG** completely ignores these level caps. If you are level 80 and facing a level 25 bandit, the mod calculates the "55 level" difference and applies it as a **massive extra buff** to the bandit's health, damage, and stamina. Moreover, it distributes these stats intelligently based on the enemy's equipped weapon and class. Thus, even low-level enemies will continue to pose a threat to you, regardless of your level!
 
 ### Class-Based Stat Multipliers (New System)
 Enemies are classified into one of the following 11 classes based on their equipment:
@@ -164,7 +174,7 @@ Every 10 player levels, NPCs receive an additional bonus multiplier:
 Each NPC receives a random multiplier between **0.8x and 1.2x** when buffed. This means two bandits of the same level may have different stats — every encounter feels unique!
 
 ### Configurable via INI
-All values can be customized through `Data/SKSE/Plugins/DynamicNPCLevelSystem.ini`:
+All values can be customized through `Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini`:
 ```ini
 [General]
 bEnableMod = 1
@@ -202,8 +212,8 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Installation
-1. Copy `DynamicNPCLevelSystem.dll` to `Data/SKSE/Plugins/`.
-2. (Optional) Create a `DynamicNPCLevelSystem.ini` file to customize the settings listed above.
+1. Copy `EvolutionOfTheEnemyNG.dll` to `Data/SKSE/Plugins/`.
+2. (Optional) Create a `EvolutionOfTheEnemyNG.ini` file to customize the settings listed above.
 3. Launch the game through SKSE.
 
 ---
