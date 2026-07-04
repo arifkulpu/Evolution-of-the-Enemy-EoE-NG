@@ -3,7 +3,7 @@
 ## Türkçe (Turkish)
 
 ### Modun Amacı ve Ne İşe Yaradığı
-**Dynamic NPC Level System**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır. Yüksek levellerde bile düşmanlar sizi zorlayacak — artık herkese tek atamazsınız!
+**Evolution of the Enemy (EoE) NG**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır. Yüksek levellerde bile düşmanlar sizi zorlayacak — artık herkese tek atamazsınız!
 
 Bu mod sayesinde:
 - Düşmanların statları, oyuncunun mevcut seviyesine göre dinamik olarak artar.
