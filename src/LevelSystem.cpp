@@ -15,9 +15,17 @@ namespace LevelSystem
     {
         if (!actorPtr || actorPtr->IsDead() || actorPtr->IsPlayerRef()) return;
 
+        // Takipçileri (followers) atla
+        if (actorPtr->IsPlayerTeammate()) return;
+
         auto settings = Settings::GetSingleton();
         auto actorBase = actorPtr->GetActorBase();
         if (!actorBase || actorBase->IsInvulnerable() || actorBase->IsEssential()) return;
+
+        // Sadece düşman NPC'leri güçlendir: Aggression kontrolü
+        // 0 = Barışçıl (tüccar, siviller), 1 = Saldırgan (gardiyanlar), 2+ = Çok saldırgan (haydutlar, canavarlar)
+        float aggression = actorPtr->AsActorValueOwner()->GetActorValue(RE::ActorValue::kAggression);
+        if (aggression < 1.0f) return;
 
         uint16_t npcLevel = actorPtr->GetLevel();
 
