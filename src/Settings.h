@@ -17,7 +17,7 @@ public:
     float fHealthGainPerLevel{10.0f};
     float fMagickaGainPerLevel{10.0f};
     float fStaminaGainPerLevel{10.0f};
-    float fBossMultiplier{2.0f};
+    float fBossMultiplier{1.5f};
     
     float fDamageResistPerLevel{1.0f};
     float fMagicResistPerLevel{1.0f};

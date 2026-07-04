@@ -75,12 +75,12 @@ namespace LevelSystem
             healthGain *= 0.1f;       // Büyücü canı çok az artmalı
             staminaGain *= 0.2f;      
             magickaGain *= 2.5f;      // Asıl manaları artmalı
-            spellPowerGain *= 1.75f;  // Hasarı %75 fazla
+            spellPowerGain *= 1.40f;  // Hasarı %40 fazla
         } else if (isArcher) {
             healthGain *= 0.8f;       // Okçuların orta canı
             staminaGain *= 2.0f;      // Dayanıklılık artmalı
             magickaGain *= 0.1f;      
-            attackDamageGain *= 1.50f; // Hasarı %50 artsın
+            attackDamageGain *= 1.25f; // Hasarı %25 artsın
         } else if (isMelee) {
             healthGain *= 2.0f;       // Tank karakterlerin canı yüksek olacak
             staminaGain *= 1.2f;      
