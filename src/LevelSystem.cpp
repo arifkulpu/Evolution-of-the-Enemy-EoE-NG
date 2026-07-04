@@ -35,57 +35,180 @@ namespace LevelSystem
         if (effectiveLevel >= playerLevel) return;
 
         uint16_t levelDiff = playerLevel - effectiveLevel;
-        
-        bool isMage = false;
-        bool isArcher = false;
-        bool isMelee = false;
+        enum class NPCRole {
+            ShieldTank,
+            DualWield,
+            Assassin,
+            AxeMace,
+            Melee1H,
+            Melee2H,
+            Spearman,
+            Rifleman,
+            Archer,
+            Spellsword,
+            MageDestruction,
+            MageHealer,
+            MageConjurer
+        };
 
+        NPCRole role = NPCRole::Melee1H;
         auto rightHand = actorPtr->GetEquippedObject(false);
         auto leftHand = actorPtr->GetEquippedObject(true);
 
-        if (rightHand) {
-            if (rightHand->IsWeapon()) {
-                auto weapon = rightHand->As<RE::TESObjectWEAP>();
-                if (weapon->IsBow() || weapon->IsCrossbow()) isArcher = true;
-                else if (weapon->IsMelee()) isMelee = true;
-            } else if (rightHand->IsMagicItem()) {
-                isMage = true;
-            }
-        }
+        bool hasShield = false;
+        bool hasMagicL = false, hasMagicR = false;
+        bool hasMeleeL = false, hasMeleeR = false;
+        bool hasDagger = false;
+        bool hasAxeMace = false;
+        bool is2H = false;
+        bool isBow = false;
+        bool isCrossbow = false;
+        
+        RE::SpellItem* spellL = nullptr;
+        RE::SpellItem* spellR = nullptr;
 
         if (leftHand) {
-            if (leftHand->IsWeapon()) {
-                auto weapon = leftHand->As<RE::TESObjectWEAP>();
-                if (weapon->IsBow() || weapon->IsCrossbow()) isArcher = true;
-                else if (weapon->IsMelee()) isMelee = true;
-            } else if (leftHand->IsMagicItem()) {
-                isMage = true;
+            if (leftHand->IsArmor()) hasShield = true;
+            else if (leftHand->IsWeapon()) {
+                hasMeleeL = true;
+                auto w = leftHand->As<RE::TESObjectWEAP>();
+                if (w->IsOneHandedDagger()) hasDagger = true;
+                if (w->IsOneHandedAxe() || w->IsOneHandedMace()) hasAxeMace = true;
+            }
+            else if (leftHand->IsMagicItem()) {
+                hasMagicL = true;
+                spellL = leftHand->As<RE::SpellItem>();
             }
         }
 
-        if (!isMage && !isArcher && !isMelee) isMelee = true;
+        if (rightHand) {
+            if (rightHand->IsWeapon()) {
+                auto w = rightHand->As<RE::TESObjectWEAP>();
+                if (w->IsBow()) isBow = true;
+                if (w->IsCrossbow()) isCrossbow = true;
+                if (w->IsTwoHandedAxe() || w->IsTwoHandedSword()) is2H = true;
+                if (w->IsOneHandedDagger()) hasDagger = true;
+                if (w->IsOneHandedAxe() || w->IsOneHandedMace()) hasAxeMace = true;
+                if (w->IsMelee()) hasMeleeR = true;
+                
+                if (w->HasKeywordString("WeapTypeSpear") || w->HasKeywordString("WeapTypeHalberd") || w->HasKeywordString("WeapTypePike")) {
+                    role = NPCRole::Spearman;
+                } else if (w->HasKeywordString("WeapTypeRifle") || w->HasKeywordString("WeapTypeMusket")) {
+                    role = NPCRole::Rifleman;
+                }
+            }
+            else if (rightHand->IsMagicItem()) {
+                hasMagicR = true;
+                spellR = rightHand->As<RE::SpellItem>();
+            }
+        }
+
+        if (role != NPCRole::Spearman && role != NPCRole::Rifleman) {
+            if (hasShield) {
+                role = NPCRole::ShieldTank;
+            } else if (isCrossbow) {
+                role = NPCRole::Rifleman;
+            } else if (isBow) {
+                role = NPCRole::Archer;
+            } else if (is2H) {
+                role = NPCRole::Melee2H;
+            } else if ((hasMagicL && hasMeleeR) || (hasMagicR && hasMeleeL)) {
+                role = NPCRole::Spellsword;
+            } else if (hasMeleeL && hasMeleeR) {
+                role = NPCRole::DualWield;
+            } else if (hasDagger) {
+                role = NPCRole::Assassin;
+            } else if (hasAxeMace) {
+                role = NPCRole::AxeMace;
+            } else if (hasMagicL || hasMagicR) {
+                RE::ActorValue skill = RE::ActorValue::kDestruction;
+                if (hasMagicL && spellL) skill = spellL->GetAssociatedSkill();
+                else if (hasMagicR && spellR) skill = spellR->GetAssociatedSkill();
+                
+                if (skill == RE::ActorValue::kRestoration) role = NPCRole::MageHealer;
+                else if (skill == RE::ActorValue::kConjuration) role = NPCRole::MageConjurer;
+                else role = NPCRole::MageDestruction;
+            } else {
+                role = NPCRole::Melee1H;
+            }
+        }
 
         float healthGain = settings->fHealthGainPerLevel;
         float magickaGain = settings->fMagickaGainPerLevel;
         float staminaGain = settings->fStaminaGainPerLevel;
         float attackDamageGain = settings->fAttackDamageMultPerLevel;
         float spellPowerGain = settings->fSpellPowerModPerLevel;
+        float speedGain = 0.0f;
 
-        if (isMage) {
-            healthGain *= 0.1f;       // Büyücü canı çok az artmalı
-            staminaGain *= 0.2f;      
-            magickaGain *= 2.5f;      // Asıl manaları artmalı
-            spellPowerGain *= 1.40f;  // Hasarı %40 fazla
-        } else if (isArcher) {
-            healthGain *= 0.8f;       // Okçuların orta canı
-            staminaGain *= 2.0f;      // Dayanıklılık artmalı
-            magickaGain *= 0.1f;      
-            attackDamageGain *= 1.25f; // Hasarı %25 artsın
-        } else if (isMelee) {
-            healthGain *= 2.0f;       // Tank karakterlerin canı yüksek olacak
-            staminaGain *= 1.2f;      
-            magickaGain *= 0.1f;      
-            attackDamageGain *= 0.10f; // Hasar artışı %10 olacak
+        switch (role) {
+            case NPCRole::ShieldTank:
+                healthGain *= 3.0f;
+                attackDamageGain *= 0.0f;
+                staminaGain *= 1.0f;
+                break;
+            case NPCRole::Melee1H:
+                healthGain *= 2.0f;
+                attackDamageGain *= 0.10f;
+                staminaGain *= 1.2f;
+                break;
+            case NPCRole::AxeMace:
+                healthGain *= 2.2f;
+                attackDamageGain *= 0.20f;
+                staminaGain *= 1.5f;
+                break;
+            case NPCRole::DualWield:
+                healthGain *= 1.2f;
+                attackDamageGain *= 0.70f;
+                staminaGain *= 2.0f;
+                speedGain = 10.0f;
+                break;
+            case NPCRole::Melee2H:
+                healthGain *= 1.5f;
+                attackDamageGain *= 0.60f;
+                staminaGain *= 1.5f;
+                break;
+            case NPCRole::Assassin:
+                healthGain *= 0.5f;
+                attackDamageGain *= 1.0f;
+                staminaGain *= 1.5f;
+                speedGain = 20.0f;
+                break;
+            case NPCRole::Spellsword:
+                healthGain *= 1.2f;
+                magickaGain *= 1.2f;
+                attackDamageGain *= 0.15f;
+                spellPowerGain *= 0.15f;
+                break;
+            case NPCRole::Spearman:
+                healthGain *= 1.5f;
+                attackDamageGain *= 0.30f;
+                staminaGain *= 1.5f;
+                break;
+            case NPCRole::Rifleman:
+                healthGain *= 0.8f;
+                attackDamageGain *= 0.60f;
+                staminaGain *= 0.5f;
+                break;
+            case NPCRole::Archer:
+                healthGain *= 0.8f;
+                attackDamageGain *= 0.25f;
+                staminaGain *= 2.0f;
+                break;
+            case NPCRole::MageDestruction:
+                healthGain *= 0.1f;
+                magickaGain *= 2.5f;
+                spellPowerGain *= 0.40f;
+                break;
+            case NPCRole::MageHealer:
+                healthGain *= 0.8f;
+                magickaGain *= 3.0f;
+                spellPowerGain *= 0.0f;
+                break;
+            case NPCRole::MageConjurer:
+                healthGain *= 0.3f;
+                magickaGain *= 3.0f;
+                spellPowerGain *= 0.10f;
+                break;
         }
 
         float multiplier = 1.0f;
@@ -132,6 +255,12 @@ namespace LevelSystem
         avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAttackDamageMult, finalAttackDamageGain);
         avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kDestructionPowerModifier, finalSpellPowerGain);
         
+        // Mod Speed
+        if (speedGain > 0.0f) {
+            float finalSpeedGain = speedGain * combinedMult;
+            avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kSpeedMult, finalSpeedGain);
+        }
+
         // Track applied level difference
         avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kVariable10, static_cast<float>(levelDiff));
     }

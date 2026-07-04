@@ -9,21 +9,28 @@ Bu mod sayesinde:
 - Düşmanların statları, oyuncunun mevcut seviyesine göre dinamik olarak artar.
 - **Sadece düşman NPC'ler** etkilenir — takipçiler, tüccarlar ve siviller güçlenmez.
 - Hayvanlar (kurt, ayı, örümcek), ejderhalar ve tüm düşman yaratıklar sisteme dahildir.
-- Düşman sınıfları kendi uzmanlıklarına göre farklı şekilde güçlenir:
-  - **Tank ve Kılıç kullananlar:** Devasa can havuzuyla etten duvar olurlar, ama hasarları düşüktür.
-  - **Okçu ve Arbalet kullananlar:** Yüksek dayanıklılıkla sürekli ok atabilirler, orta seviye cana sahiptirler.
-  - **Büyücüler:** Çok yüksek manayla ölümcül büyüler atarlar ama cam top gibi kırılgandırlar.
+- Mod, düşmanların ellerindeki silah ve büyülere göre **11 farklı sınıf** tespit eder ve onlara uygun bonuslar verir (Örneğin bir suikastçı çok hızlı koşar, bir tankın devasa canı olur).
+- Modlu silahlar (Tüfekler, Mızraklar, Arbaletler) otomatik olarak tanınır ve uygun sınıflara dahil edilir.
 - Boss niteliğindeki düşmanlar ve ejderhalar için özel çarpanlar (%50 bonus) devreye girer.
 
-### Sınıf Bazlı Stat Artışları
+### Sınıf Bazlı Stat Artışları (Yeni Sistem)
+Oyun içindeki düşmanlar ellerindeki silahlara göre aşağıdaki 11 sınıftan birine dahil edilir:
 
-| Stat | Tank/Kılıçlı | Okçu | Büyücü |
-|:---|:---:|:---:|:---:|
-| **Can (Health)** | ×2.0 | ×0.8 | ×0.1 |
-| **Mana (Magicka)** | ×0.1 | ×0.1 | ×2.5 |
-| **Dayanıklılık (Stamina)** | ×1.2 | ×2.0 | ×0.2 |
-| **Fiziksel Hasar** | %10 | %25 | — |
-| **Büyü Hasarı** | — | — | %40 |
+| Sınıf Adı | Silah / Büyü | Can | Hasar | Stamina | Mana | Ekstra Özellik |
+|:---|:---|:---:|:---:|:---:|:---:|:---|
+| **Kalkanlı Tank** | Kalkan | **3.0x** | %0 | 1.0x | - | Sadece hasar emer. |
+| **Gürz/Balta Uzmanı** | Tek Elli Balta/Gürz | 2.2x | %20 | 1.5x | - | Kılıca göre ağır hasar. |
+| **Savaşçı (Kılıçlı)**| Tek Elli Kılıç | 2.0x | %10 | 1.2x | - | Dengeli eski tank. |
+| **Berserker** | Çift Elli Silah | 1.5x | **%60** | 1.5x | - | Yavaş ama ölümcül. |
+| **Çift Silah (Dual)** | İki Elde Silah | 1.2x | **%70** | 2.0x | - | +%10 Hız bonusu. |
+| **Suikastçı** | Hançer | 0.5x | **%100** | 1.5x | - | +%20 Hız bonusu. |
+| **Mızrakçı (Mod)** | Mızrak / Kargı | 1.5x | %30 | 1.5x | - | Orta menzil dövüşçü. |
+| **Tüfekçi / Arbalet**| Tüfek / Arbalet | 0.8x | %60 | 0.5x | - | Keskin nişancı. |
+| **Okçu** | Yay | 0.8x | %25 | 2.0x | - | Sürekli atış yapar. |
+| **Büyülü Şövalye** | Kılıç + Büyü | 1.2x | %15 | - | 1.2x | %15 Büyü hasarı. |
+| **Yıkım Büyücüsü** | Yıkım Büyüsü/Asa | 0.1x | - | - | **2.5x** | %40 Büyü hasarı. |
+| **Şifacı (Healer)** | İyileştirme Büyüsü | 0.8x | - | - | **3.0x** | %0 Büyü hasarı. |
+| **Ölüçağırıcı** | Çağırma Büyüsü | 0.3x | - | - | **3.0x** | %10 Büyü hasarı. |
 
 ### Hangi NPC'ler Etkilenir?
 
@@ -53,7 +60,7 @@ Oyuncunun seviyesi her 10 levelde bir kademe atlayarak NPC'lere ek bonus çarpan
 Her NPC'ye buff uygulanırken **%80 ile %120** arasında rastgele bir çarpan atanır. Böylece aynı seviyedeki iki haydut bile farklı güçte olur — her savaş farklı bir deneyim sunar!
 
 ### INI ile Ayarlanabilir Değerler
-`Data/SKSE/Plugins/DynamicNPCLevelSystem.ini` dosyasıyla tüm değerler özelleştirilebilir:
+`Data/SKSE/Plugins/DynamicNPCLevelSystem.ini` dosyasıyla taban değerler özelleştirilebilir. (Bu değerler yukarıdaki sınıf çarpanlarıyla çarpılır).
 ```ini
 [General]
 bEnableMod = 1
@@ -106,21 +113,28 @@ With this mod:
 - Enemy stats are dynamically increased based on the level difference with the player.
 - **Only hostile NPCs** are affected — followers, merchants and civilians are not buffed.
 - Animals (wolves, bears, spiders), dragons and all hostile creatures are included.
-- Enemy classes gain specific bonuses based on their combat style:
-  - **Tanks and Melee Fighters:** Massive health pools make them walls of flesh, but their extra damage is very low.
-  - **Archers and Crossbowmen:** High stamina lets them fire arrows relentlessly, with moderate health.
-  - **Mages:** Very high magicka with deadly spells, but fragile as glass cannons.
+- The mod detects **11 different classes** based on equipped weapons/spells and applies specific stat modifiers (e.g. Assassins run faster, Shield Tanks have massive health).
+- Modded weapons (Rifles, Spears, Crossbows) are automatically detected and mapped to appropriate classes.
 - Bosses and dragons receive a special multiplier (50% bonus) for truly epic battles.
 
-### Class-Based Stat Multipliers
+### Class-Based Stat Multipliers (New System)
+Enemies are classified into one of the following 11 classes based on their equipment:
 
-| Stat | Tank/Melee | Archer | Mage |
-|:---|:---:|:---:|:---:|
-| **Health** | ×2.0 | ×0.8 | ×0.1 |
-| **Magicka** | ×0.1 | ×0.1 | ×2.5 |
-| **Stamina** | ×1.2 | ×2.0 | ×0.2 |
-| **Physical Damage** | 10% | 25% | — |
-| **Spell Damage** | — | — | 40% |
+| Class Name | Weapon / Spell | Health | Damage | Stamina | Magicka | Extra Features |
+|:---|:---|:---:|:---:|:---:|:---:|:---|
+| **Shield Tank** | Shield | **3.0x** | 0% | 1.0x | - | Pure damage sponge. |
+| **Axe/Mace Expert** | 1H Axe/Mace | 2.2x | 20% | 1.5x | - | Hits harder than swords. |
+| **Warrior (Sword)**| 1H Sword | 2.0x | 10% | 1.2x | - | Balanced melee. |
+| **Berserker** | 2H Weapon | 1.5x | **60%** | 1.5x | - | Slow but deadly. |
+| **Dual Wield** | Two Weapons | 1.2x | **70%** | 2.0x | - | +10% Speed bonus. |
+| **Assassin** | Dagger | 0.5x | **100%** | 1.5x | - | +20% Speed bonus. |
+| **Spearman (Mod)**| Spear / Pike | 1.5x | 30% | 1.5x | - | Mid-range fighter. |
+| **Rifle / Crossbow**| Rifle / Crossbow| 0.8x | 60% | 0.5x | - | Sniper damage. |
+| **Archer** | Bow | 0.8x | 25% | 2.0x | - | Constant fire. |
+| **Spellsword** | Sword + Spell | 1.2x | 15% | - | 1.2x | +15% Spell power. |
+| **Destruction Mage**| Destruction/Staff| 0.1x | - | - | **2.5x** | +40% Spell power. |
+| **Healer** | Restoration | 0.8x | - | - | **3.0x** | +0% Spell power. |
+| **Conjurer** | Conjuration | 0.3x | - | - | **3.0x** | +10% Spell power. |
 
 ### Which NPCs Are Affected?
 
