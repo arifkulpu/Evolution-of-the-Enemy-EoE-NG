@@ -103,6 +103,7 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Kurulum
+- Herhangi bir Mod yönetici ile otomatik kurabilirsiniz.
 1. `EvolutionOfTheEnemyNG.dll` dosyasını `Data/SKSE/Plugins/` klasörüne kopyalayın.
 2. (İsteğe bağlı) `EvolutionOfTheEnemyNG.ini` dosyası oluşturarak yukarıdaki ayarları özelleştirin.
 3. Oyunu SKSE üzerinden başlatın.
@@ -212,6 +213,7 @@ fTierMultiplierPer10Levels = 0.10
 - [Address Library for SKSE Plugins](https://www.nexusmods.com/skyrimspecialedition/mods/32444)
 
 ### Installation
+- You can install any Mod automatically with a mod manager.
 1. Copy `EvolutionOfTheEnemyNG.dll` to `Data/SKSE/Plugins/`.
 2. (Optional) Create a `EvolutionOfTheEnemyNG.ini` file to customize the settings listed above.
 3. Launch the game through SKSE.
