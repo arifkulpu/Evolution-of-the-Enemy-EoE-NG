@@ -3,19 +3,44 @@
 ## Türkçe (Turkish)
 
 ### Modun Amacı ve Ne İşe Yaradığı
-**Dynamic NPC Level System**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır.
+**Dynamic NPC Level System**, Skyrim'deki düşmanları ve NPC'leri oyuncunun seviyesine göre dinamik olarak güçlendiren bir SKSE modudur. Oyunun zorluğunu sürekli ve dengeli kılmak amacıyla tasarlanmıştır. Yüksek levellerde bile düşmanlar sizi zorlayacak — artık herkese tek atamazsınız!
 
 Bu mod sayesinde:
-- Düşmanların seviyesi, oyuncunun mevcut seviyesine göre yukarı çekilir.
-- NPC'lerin **Sağlık, Efsun (Magicka) ve Dayanıklılık (Stamina)** statları, level farkına göre dinamik olarak artar.
-- Düşman sınıfları kendi uzmanlıklarına göre ekstra güçlenir:
-  - **Tank ve Kılıç kullananlar:** Sağlık 2x artış, dayanıklılık 1.2x artış, fiziksel hasar artışı %10. Devasa canlarıyla etten duvar gibi olurlar, ama hasarları düşüktür.
-  - **Okçu ve Arbalet kullananlar:** Dayanıklılık 2x artış, sağlık 0.8x (orta seviye), fiziksel hasar artışı %50. Yüksek dayanıklılıkları sayesinde sürekli ok atabilirler.
-  - **Büyücüler:** Magicka 2.5x artış, sağlık 0.1x (çok az), büyü hasarı (Destruction) %75 artış. Cam toplar gibi kırılgandırlar ama büyüleri çok ölümcüldür.
-- Boss niteliğindeki düşmanlar ve ejderhalar için özel çarpanlar devreye girerek daha efsanevi savaşlar sunulur.
+- Düşmanların statları, oyuncunun mevcut seviyesine göre dinamik olarak artar.
+- **Sadece düşman NPC'ler** etkilenir — takipçiler, tüccarlar ve siviller güçlenmez.
+- Hayvanlar (kurt, ayı, örümcek), ejderhalar ve tüm düşman yaratıklar sisteme dahildir.
+- Düşman sınıfları kendi uzmanlıklarına göre farklı şekilde güçlenir:
+  - **Tank ve Kılıç kullananlar:** Devasa can havuzuyla etten duvar olurlar, ama hasarları düşüktür.
+  - **Okçu ve Arbalet kullananlar:** Yüksek dayanıklılıkla sürekli ok atabilirler, orta seviye cana sahiptirler.
+  - **Büyücüler:** Çok yüksek manayla ölümcül büyüler atarlar ama cam top gibi kırılgandırlar.
+- Boss niteliğindeki düşmanlar ve ejderhalar için özel çarpanlar (%50 bonus) devreye girer.
+
+### Sınıf Bazlı Stat Artışları
+
+| Stat | Tank/Kılıçlı | Okçu | Büyücü |
+|:---|:---:|:---:|:---:|
+| **Can (Health)** | ×2.0 | ×0.8 | ×0.1 |
+| **Mana (Magicka)** | ×0.1 | ×0.1 | ×2.5 |
+| **Dayanıklılık (Stamina)** | ×1.2 | ×2.0 | ×0.2 |
+| **Fiziksel Hasar** | %10 | %25 | — |
+| **Büyü Hasarı** | — | — | %40 |
+
+### Hangi NPC'ler Etkilenir?
+
+| NPC Tipi | Etkilenir mi? |
+|:---|:---:|
+| Haydutlar, korsanlar | ✅ |
+| Kurtlar, ayılar, örümcekler | ✅ |
+| Ejderhalar (Boss çarpanıyla) | ✅ |
+| Draugr, vampirler | ✅ |
+| Gardiyanlar | ✅ |
+| Takipçiler (Lydia vb.) | ❌ |
+| Tüccarlar, siviller | ❌ |
+| Essential / Invulnerable NPC'ler | ❌ |
 
 ### Seviye Kademe Sistemi (Level Brackets)
 Oyuncunun seviyesi her 10 levelde bir kademe atlayarak NPC'lere ek bonus çarpan uygulanır:
+
 | Oyuncu Seviyesi | Kademe | Çarpan |
 |:---:|:---:|:---:|
 | 1 - 9 | 0 | 1.0x |
@@ -39,7 +64,7 @@ fMagickaGainPerLevel = 10.0
 fStaminaGainPerLevel = 10.0
 
 [Boss]
-fBossMultiplier = 2.0
+fBossMultiplier = 1.5
 
 [Resistance]
 fDamageResistPerLevel = 1.0
@@ -59,7 +84,7 @@ fTierMultiplierPer10Levels = 0.10
 
 ### Uyumluluk
 - Mod CommonLibSSE-NG altyapısıyla geliştirildiği için tek bir DLL dosyası ile **Skyrim Special Edition (1.5.97)**, **Skyrim Anniversary Edition (1.6.xx)** ve **Skyrim VR** sürümleriyle tam uyumludur.
-- Düşman statlarını değiştiren diğer modlarla çalışabilir; dinamik hesaplamalar mevcut statlar üzerine eklenir. 
+- Düşman statlarını değiştiren diğer modlarla çalışabilir; dinamik hesaplamalar mevcut statlar üzerine eklenir.
 
 ### Gereksinimler
 - [SKSE64](http://skse.silverlock.org/) (Sürümünüze uygun olan)
@@ -75,19 +100,44 @@ fTierMultiplierPer10Levels = 0.10
 ## English
 
 ### Purpose and Features
-**Dynamic NPC Level System** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough.
+**Dynamic NPC Level System** is an SKSE plugin that dynamically scales and buffs enemies and NPCs based on the player's level, ensuring a consistent and balanced challenge throughout your Skyrim playthrough. Even at high levels, enemies will keep you on your toes — no more one-shotting everything!
 
 With this mod:
-- Enemy levels are scaled up dynamically to match or exceed the player's level.
-- NPCs' **Health, Magicka, and Stamina** stats are dynamically increased based on the level difference.
+- Enemy stats are dynamically increased based on the level difference with the player.
+- **Only hostile NPCs** are affected — followers, merchants and civilians are not buffed.
+- Animals (wolves, bears, spiders), dragons and all hostile creatures are included.
 - Enemy classes gain specific bonuses based on their combat style:
-  - **Tanks and Melee Fighters:** Health 2x gain, stamina 1.2x gain, attack damage increase only 10%. They become walls of flesh with massive health but very low extra damage.
-  - **Archers and Crossbowmen:** Stamina 2x gain, health 0.8x (moderate), attack damage increase 50%. High stamina lets them fire arrows relentlessly.
-  - **Mages:** Magicka 2.5x gain, health 0.1x (very low), spell damage (Destruction) increase 75%. Fragile as glass cannons but their spells are deadly.
-- Bosses and dragons receive special multipliers for truly epic battles.
+  - **Tanks and Melee Fighters:** Massive health pools make them walls of flesh, but their extra damage is very low.
+  - **Archers and Crossbowmen:** High stamina lets them fire arrows relentlessly, with moderate health.
+  - **Mages:** Very high magicka with deadly spells, but fragile as glass cannons.
+- Bosses and dragons receive a special multiplier (50% bonus) for truly epic battles.
+
+### Class-Based Stat Multipliers
+
+| Stat | Tank/Melee | Archer | Mage |
+|:---|:---:|:---:|:---:|
+| **Health** | ×2.0 | ×0.8 | ×0.1 |
+| **Magicka** | ×0.1 | ×0.1 | ×2.5 |
+| **Stamina** | ×1.2 | ×2.0 | ×0.2 |
+| **Physical Damage** | 10% | 25% | — |
+| **Spell Damage** | — | — | 40% |
+
+### Which NPCs Are Affected?
+
+| NPC Type | Affected? |
+|:---|:---:|
+| Bandits, pirates | ✅ |
+| Wolves, bears, spiders | ✅ |
+| Dragons (with Boss multiplier) | ✅ |
+| Draugr, vampires | ✅ |
+| Guards | ✅ |
+| Followers (Lydia, etc.) | ❌ |
+| Merchants, civilians | ❌ |
+| Essential / Invulnerable NPCs | ❌ |
 
 ### Level Bracket System (Tier Scaling)
 Every 10 player levels, NPCs receive an additional bonus multiplier:
+
 | Player Level | Tier | Multiplier |
 |:---:|:---:|:---:|
 | 1 - 9 | 0 | 1.0x |
@@ -111,7 +161,7 @@ fMagickaGainPerLevel = 10.0
 fStaminaGainPerLevel = 10.0
 
 [Boss]
-fBossMultiplier = 2.0
+fBossMultiplier = 1.5
 
 [Resistance]
 fDamageResistPerLevel = 1.0
