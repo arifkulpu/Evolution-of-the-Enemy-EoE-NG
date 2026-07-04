@@ -5,8 +5,8 @@
 
 void Settings::Load()
 {
-    // The INI file will be at Data/SKSE/Plugins/DynamicNPCLevelSystem.ini
-    std::ifstream file("Data/SKSE/Plugins/DynamicNPCLevelSystem.ini");
+    // The INI file will be at Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini
+    std::ifstream file("Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini");
     if (!file.is_open()) {
         SKSE::log::info("No INI file found. Using default settings.");
         return;
