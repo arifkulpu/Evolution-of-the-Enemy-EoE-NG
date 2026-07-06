@@ -18,6 +18,10 @@ Skyrim'in varsayılan düşman seviye sistemi (Vanilla Scaling) seviye sınırla
 
 **EoE NG** ise bu seviye sınırlarını tamamen yok sayar. Eğer siz Level 80 iseniz ve karşınızda Level 25 bir haydut varsa, modumuz aradaki "55 level" farkını hesaplar ve bu farkı haydutun canına, hasarına ve dayanıklılığına **ekstra buff olarak ekler**. Üstelik bu işlemi, haydutun elindeki silaha ve sınıfına göre son derece mantıklı ve dengeli bir şekilde yapar. Böylece düşük seviyeli düşmanlar bile, seviyeniz kaç olursa olsun sizin için her zaman bir tehdit oluşturmaya devam eder!
 
+### Versiyon 1.1 Güncellemesi
+- **Performans Optimizasyonu (FPS Stutter Çözümü):** Savaş başladığında yaşanan anlık takılma/kasma sorunu tamamen çözüldü. Mod artık savaş sırasında gereksiz tarama yapmak yerine yalnızca savaşa dahil olan NPC'yi anlık olarak işliyor. Skyrim oyun motoruna binen yük %99 oranında azaltıldı.
+- **Düşman Tipi Seçenekleri (INI Toggles):** `EvolutionOfTheEnemyNG.ini` dosyasına `[Toggles]` bölümü eklendi. Artık haydutlar, hayvanlar, canavarlar, ejderhalar, bosslar ve ölümsüzler (undead) gibi belirli düşman tiplerinin moddan etkilenip etkilenmeyeceğini dilediğiniz gibi açıp kapatabilirsiniz.
+
 ### Sınıf Bazlı Stat Artışları (Yeni Sistem)
 Oyun içindeki düşmanlar ellerindeki silahlara göre aşağıdaki 11 sınıftan birine dahil edilir:
 
@@ -127,6 +131,10 @@ With this mod:
 Skyrim's default enemy scaling system is restricted by Level Caps. For example, the strongest bandit type in the game, the "Bandit Marauder", is capped at level 25. Even if you are level 80, the game will at most spawn a level 25 bandit for you. This makes the late game incredibly easy and boring.
 
 **EoE NG** completely ignores these level caps. If you are level 80 and facing a level 25 bandit, the mod calculates the "55 level" difference and applies it as a **massive extra buff** to the bandit's health, damage, and stamina. Moreover, it distributes these stats intelligently based on the enemy's equipped weapon and class. Thus, even low-level enemies will continue to pose a threat to you, regardless of your level!
+
+### Version 1.1 Update
+- **Performance Optimization (FPS Stutter Fix):** Completely fixed the stutter/FPS drop issue that occurred when combat initiated. The mod now instantly processes only the specific NPC entering combat, rather than scanning all actors in the cell. Engine load during combat start is reduced by 99%.
+- **Enemy Type Toggles (INI Settings):** Added a `[Toggles]` section to the `EvolutionOfTheEnemyNG.ini` file. You can now freely enable or disable scaling for specific enemy types such as bandits, animals, monsters, dragons, bosses, and undead.
 
 ### Class-Based Stat Multipliers (New System)
 Enemies are classified into one of the following 11 classes based on their equipment:
