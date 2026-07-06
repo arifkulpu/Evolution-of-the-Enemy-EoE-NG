@@ -34,6 +34,15 @@ public:
     // Tier/Bracket multiplier: bonus per 10 player levels
     float fTierMultiplierPer10Levels{0.10f};
 
+    // Toggles for specific enemy types
+    bool bEnableBanditsAndHumanoids{true};
+    bool bEnableAnimals{true};
+    bool bEnableMonsters{true};
+    bool bEnableUndead{true};
+    bool bEnableAutomatons{true};
+    bool bEnableDragons{true};
+    bool bEnableBosses{true};
+
 private:
     Settings() = default;
     ~Settings() = default;

@@ -54,6 +54,13 @@ void Settings::ParseLine(const std::string& line)
         else if (key == "fRandomMin") fRandomMin = std::stof(valStr);
         else if (key == "fRandomMax") fRandomMax = std::stof(valStr);
         else if (key == "fTierMultiplierPer10Levels") fTierMultiplierPer10Levels = std::stof(valStr);
+        else if (key == "bEnableBanditsAndHumanoids") bEnableBanditsAndHumanoids = (std::stoi(valStr) != 0);
+        else if (key == "bEnableAnimals") bEnableAnimals = (std::stoi(valStr) != 0);
+        else if (key == "bEnableMonsters") bEnableMonsters = (std::stoi(valStr) != 0);
+        else if (key == "bEnableUndead") bEnableUndead = (std::stoi(valStr) != 0);
+        else if (key == "bEnableAutomatons") bEnableAutomatons = (std::stoi(valStr) != 0);
+        else if (key == "bEnableDragons") bEnableDragons = (std::stoi(valStr) != 0);
+        else if (key == "bEnableBosses") bEnableBosses = (std::stoi(valStr) != 0);
     } catch (...) {
         SKSE::log::warn("Failed to parse setting: {} = {}", key, valStr);
     }

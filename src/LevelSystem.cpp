@@ -27,6 +27,30 @@ namespace LevelSystem
         float aggression = actorPtr->AsActorValueOwner()->GetActorValue(RE::ActorValue::kAggression);
         if (aggression < 1.0f) return;
 
+        bool isBoss = IsBoss(actorPtr);
+        if (isBoss && !settings->bEnableBosses) return;
+
+        if (!isBoss) {
+            auto race = actorBase->GetRace();
+            bool isDragon = race && race->HasKeywordString("ActorTypeDragon");
+            if (isDragon && !settings->bEnableDragons) return;
+            
+            bool isAnimal = actorPtr->HasKeywordString("ActorTypeAnimal");
+            if (isAnimal && !settings->bEnableAnimals) return;
+            
+            bool isMonster = actorPtr->HasKeywordString("ActorTypeMonster") || actorPtr->HasKeywordString("ActorTypeTroll");
+            if (isMonster && !settings->bEnableMonsters) return;
+            
+            bool isUndead = actorPtr->HasKeywordString("ActorTypeUndead") || actorPtr->HasKeywordString("Vampire");
+            if (isUndead && !settings->bEnableUndead) return;
+            
+            bool isDwarven = actorPtr->HasKeywordString("ActorTypeDwarven");
+            if (isDwarven && !settings->bEnableAutomatons) return;
+            
+            bool isNPC = actorPtr->HasKeywordString("ActorTypeNPC");
+            if (isNPC && !settings->bEnableBanditsAndHumanoids) return;
+        }
+
         uint16_t npcLevel = actorPtr->GetLevel();
 
         float extraLevels = actorPtr->AsActorValueOwner()->GetActorValue(RE::ActorValue::kVariable10);
@@ -298,23 +322,7 @@ namespace LevelSystem
         }
     };
 
-    class CellAttachEventHandler : public RE::BSTEventSink<RE::TESCellAttachDetachEvent>
-    {
-    public:
-        static CellAttachEventHandler* GetSingleton()
-        {
-            static CellAttachEventHandler singleton;
-            return &singleton;
-        }
 
-        RE::BSEventNotifyControl ProcessEvent(const RE::TESCellAttachDetachEvent* a_event, RE::BSTEventSource<RE::TESCellAttachDetachEvent>*) override
-        {
-            if (a_event && a_event->attached) {
-                UpdateNPCLevels();
-            }
-            return RE::BSEventNotifyControl::kContinue;
-        }
-    };
 
     class CombatEventHandler : public RE::BSTEventSink<RE::TESCombatEvent>
     {
@@ -327,8 +335,17 @@ namespace LevelSystem
 
         RE::BSEventNotifyControl ProcessEvent(const RE::TESCombatEvent* a_event, RE::BSTEventSource<RE::TESCombatEvent>*) override
         {
-            if (a_event && a_event->newState != RE::ACTOR_COMBAT_STATE::kNone) {
-                UpdateNPCLevels();
+            if (a_event && a_event->actor && a_event->newState != RE::ACTOR_COMBAT_STATE::kNone) {
+                auto settings = Settings::GetSingleton();
+                if (!settings->bEnableMod) return RE::BSEventNotifyControl::kContinue;
+                
+                auto player = RE::PlayerCharacter::GetSingleton();
+                if (player) {
+                    auto actor = a_event->actor.get()->As<RE::Actor>();
+                    if (actor) {
+                        ProcessSingleActor(actor, player->GetLevel());
+                    }
+                }
             }
             return RE::BSEventNotifyControl::kContinue;
         }
@@ -375,10 +392,9 @@ namespace LevelSystem
         }
 
         if (auto scripts = RE::ScriptEventSourceHolder::GetSingleton()) {
-            scripts->AddEventSink(CellAttachEventHandler::GetSingleton());
             scripts->AddEventSink(CombatEventHandler::GetSingleton());
             scripts->AddEventSink(ObjectLoadedEventHandler::GetSingleton());
-            SKSE::log::info("Registered CellAttach, Combat, and ObjectLoaded Event Sinks");
+            SKSE::log::info("Registered Combat and ObjectLoaded Event Sinks");
         }
     }
 
