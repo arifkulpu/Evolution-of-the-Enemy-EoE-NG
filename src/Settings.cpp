@@ -8,7 +8,8 @@ void Settings::Load()
     // The INI file will be at Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini
     std::ifstream file("Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini");
     if (!file.is_open()) {
-        SKSE::log::info("No INI file found. Using default settings.");
+        SKSE::log::info("No INI file found. Creating default INI at Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini.");
+        Save();
         return;
     }
 
@@ -18,6 +19,59 @@ void Settings::Load()
     }
     
     SKSE::log::info("Settings loaded successfully!");
+}
+
+void Settings::Save()
+{
+    std::ofstream file("Data/SKSE/Plugins/EvolutionOfTheEnemyNG.ini");
+    if (!file.is_open()) {
+        SKSE::log::error("Failed to create default INI file!");
+        return;
+    }
+
+    file << "[General]\n";
+    file << "bEnableMod = " << (bEnableMod ? "1" : "0") << "\n\n";
+
+    file << "[Stats]\n";
+    file << "fHealthGainPerLevel = " << fHealthGainPerLevel << "\n";
+    file << "fMagickaGainPerLevel = " << fMagickaGainPerLevel << "\n";
+    file << "fStaminaGainPerLevel = " << fStaminaGainPerLevel << "\n\n";
+
+    file << "[Boss]\n";
+    file << "fBossMultiplier = " << fBossMultiplier << "\n\n";
+
+    file << "[Resistance]\n";
+    file << "fDamageResistPerLevel = " << fDamageResistPerLevel << "\n";
+    file << "fMagicResistPerLevel = " << fMagicResistPerLevel << "\n\n";
+
+    file << "[Damage]\n";
+    file << "fAttackDamageMultPerLevel = " << fAttackDamageMultPerLevel << "\n";
+    file << "fSpellPowerModPerLevel = " << fSpellPowerModPerLevel << "\n\n";
+
+    file << "[Randomness]\n";
+    file << "fRandomMin = " << fRandomMin << "\n";
+    file << "fRandomMax = " << fRandomMax << "\n\n";
+
+    file << "[Tier]\n";
+    file << "fTierMultiplierPer10Levels = " << fTierMultiplierPer10Levels << "\n\n";
+
+    file << "[Toggles]\n";
+    file << "bEnableBanditsAndHumanoids = " << (bEnableBanditsAndHumanoids ? "1" : "0") << "\n";
+    file << "bEnableAnimals = " << (bEnableAnimals ? "1" : "0") << "\n";
+    file << "bEnableMonsters = " << (bEnableMonsters ? "1" : "0") << "\n";
+    file << "bEnableUndead = " << (bEnableUndead ? "1" : "0") << "\n";
+    file << "bEnableAutomatons = " << (bEnableAutomatons ? "1" : "0") << "\n";
+    file << "bEnableDragons = " << (bEnableDragons ? "1" : "0") << "\n";
+    file << "bEnableBosses = " << (bEnableBosses ? "1" : "0") << "\n\n";
+
+    file << "[Nerf]\n";
+    file << "bEnableHighLevelNerf = " << (bEnableHighLevelNerf ? "1" : "0") << "\n";
+    file << "fNerfDamagePerLevel = " << fNerfDamagePerLevel << "\n";
+    file << "fNerfArmorPerLevel = " << fNerfArmorPerLevel << "\n";
+    file << "fMaxNerfLimit = " << fMaxNerfLimit << "\n";
+
+    file.close();
+    SKSE::log::info("Default INI file created successfully!");
 }
 
 void Settings::ParseLine(const std::string& line)
@@ -61,6 +115,10 @@ void Settings::ParseLine(const std::string& line)
         else if (key == "bEnableAutomatons") bEnableAutomatons = (std::stoi(valStr) != 0);
         else if (key == "bEnableDragons") bEnableDragons = (std::stoi(valStr) != 0);
         else if (key == "bEnableBosses") bEnableBosses = (std::stoi(valStr) != 0);
+        else if (key == "bEnableHighLevelNerf") bEnableHighLevelNerf = (std::stoi(valStr) != 0);
+        else if (key == "fNerfDamagePerLevel") fNerfDamagePerLevel = std::stof(valStr);
+        else if (key == "fNerfArmorPerLevel") fNerfArmorPerLevel = std::stof(valStr);
+        else if (key == "fMaxNerfLimit") fMaxNerfLimit = std::stof(valStr);
     } catch (...) {
         SKSE::log::warn("Failed to parse setting: {} = {}", key, valStr);
     }

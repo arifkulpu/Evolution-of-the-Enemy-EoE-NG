@@ -12,6 +12,7 @@ public:
     }
 
     void Load();
+    void Save();
 
     bool bEnableMod{true};
     float fHealthGainPerLevel{10.0f};
@@ -42,6 +43,12 @@ public:
     bool bEnableAutomatons{true};
     bool bEnableDragons{true};
     bool bEnableBosses{true};
+
+    // Nerf settings for high level enemies
+    bool bEnableHighLevelNerf{true};
+    float fNerfDamagePerLevel{0.03f};
+    float fNerfArmorPerLevel{2.0f};
+    float fMaxNerfLimit{0.50f};
 
 private:
     Settings() = default;
