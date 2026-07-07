@@ -19,10 +19,10 @@ Skyrim'in varsayılan düşman seviye sistemi (Vanilla Scaling) seviye sınırla
 **EoE NG** ise bu seviye sınırlarını tamamen yok sayar. Eğer siz Level 80 iseniz ve karşınızda Level 25 bir haydut varsa, modumuz aradaki "55 level" farkını hesaplar ve bu farkı haydutun canına, hasarına ve dayanıklılığına **ekstra buff olarak ekler**. Üstelik bu işlemi, haydutun elindeki silaha ve sınıfına göre son derece mantıklı ve dengeli bir şekilde yapar. Böylece düşük seviyeli düşmanlar bile, seviyeniz kaç olursa olsun sizin için her zaman bir tehdit oluşturmaya devam eder!
 
 ### Versiyon 1.2 Güncellemesi
+- **Yüksek Seviye Düşman Zayıflatması (Nerf Sistemi):** Dark Souls stili bir zorluk için, sizden çok yüksek seviyeli olan düşmanlar artık doğrudan tek atmıyor! Aranızdaki seviye farkına oranla hasarları ve zırhları INI dosyasından ayarlayabileceğiniz oranda (varsayılan olarak maks. %50'ye kadar) azaltılır. Böylece yüksek levelli düşmanları kesmek "imkansız" değil, tamamen "yetenek tabanlı" (dodge/block) bir mücadele haline gelir.
 - **Otomatik INI Oluşturma (Auto-generate INI):** Mod ilk kez çalıştığında (eğer yoksa) en güncel ayar dosyası olan `EvolutionOfTheEnemyNG.ini` dosyasını `Data/SKSE/Plugins/` dizininde (veya MO2 Overwrite klasöründe) **otomatik olarak kendisi oluşturur**.
 
 ### Versiyon 1.1 Güncellemesi
-- **Yüksek Seviye Düşman Zayıflatması (Nerf Sistemi):** Dark Souls stili bir zorluk için, sizden çok yüksek seviyeli olan düşmanlar artık doğrudan tek atmıyor! Aranızdaki seviye farkına oranla hasarları ve zırhları INI dosyasından ayarlayabileceğiniz oranda (varsayılan olarak maks. %50'ye kadar) azaltılır. Böylece yüksek levelli düşmanları kesmek "imkansız" değil, tamamen "yetenek tabanlı" (dodge/block) bir mücadele haline gelir.
 - **Performans Optimizasyonu (FPS Stutter Çözümü):** Savaş başladığında yaşanan anlık takılma/kasma sorunu tamamen çözüldü. Mod artık savaş sırasında gereksiz tarama yapmak yerine yalnızca savaşa dahil olan NPC'yi anlık olarak işliyor. Skyrim oyun motoruna binen yük %99 oranında azaltıldı.
 - **Düşman Tipi Seçenekleri (INI Toggles):** `EvolutionOfTheEnemyNG.ini` dosyasına `[Toggles]` bölümü eklendi. Artık haydutlar, hayvanlar, canavarlar, ejderhalar, bosslar ve ölümsüzler (undead) gibi belirli düşman tiplerinin moddan etkilenip etkilenmeyeceğini dilediğiniz gibi açıp kapatabilirsiniz.
 
@@ -137,10 +137,10 @@ Skyrim's default enemy scaling system is restricted by Level Caps. For example, 
 **EoE NG** completely ignores these level caps. If you are level 80 and facing a level 25 bandit, the mod calculates the "55 level" difference and applies it as a **massive extra buff** to the bandit's health, damage, and stamina. Moreover, it distributes these stats intelligently based on the enemy's equipped weapon and class. Thus, even low-level enemies will continue to pose a threat to you, regardless of your level!
 
 ### Version 1.2 Update
+- **High Level Enemy Nerf System:** For a Dark Souls style experience, enemies that are much higher level than you will no longer one-shot you instantly! Based on the level difference, their damage and armor are proportionally nerfed (up to a max of 50%, configurable via INI). This makes fighting high-level enemies a "skill-based" (dodging/blocking) challenge rather than mathematically impossible.
 - **Auto-Generate INI File:** The mod now automatically generates the default `EvolutionOfTheEnemyNG.ini` file in the `Data/SKSE/Plugins/` directory (or MO2's Overwrite folder) on its first run if it doesn't exist. Mod authors no longer need to manually package the INI file!
 
 ### Version 1.1 Update
-- **High Level Enemy Nerf System:** For a Dark Souls style experience, enemies that are much higher level than you will no longer one-shot you instantly! Based on the level difference, their damage and armor are proportionally nerfed (up to a max of 50%, configurable via INI). This makes fighting high-level enemies a "skill-based" (dodging/blocking) challenge rather than mathematically impossible.
 - **Performance Optimization (FPS Stutter Fix):** Completely fixed the stutter/FPS drop issue that occurred when combat initiated. The mod now instantly processes only the specific NPC entering combat, rather than scanning all actors in the cell. Engine load during combat start is reduced by 99%.
 - **Enemy Type Toggles (INI Settings):** Added a `[Toggles]` section to the `EvolutionOfTheEnemyNG.ini` file. You can now freely enable or disable scaling for specific enemy types such as bandits, animals, monsters, dragons, bosses, and undead.
 
