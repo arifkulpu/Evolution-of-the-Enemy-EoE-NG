@@ -18,6 +18,9 @@ Skyrim'in varsayılan düşman seviye sistemi (Vanilla Scaling) seviye sınırla
 
 **EoE NG** ise bu seviye sınırlarını tamamen yok sayar. Eğer siz Level 80 iseniz ve karşınızda Level 25 bir haydut varsa, modumuz aradaki "55 level" farkını hesaplar ve bu farkı haydutun canına, hasarına ve dayanıklılığına **ekstra buff olarak ekler**. Üstelik bu işlemi, haydutun elindeki silaha ve sınıfına göre son derece mantıklı ve dengeli bir şekilde yapar. Böylece düşük seviyeli düşmanlar bile, seviyeniz kaç olursa olsun sizin için her zaman bir tehdit oluşturmaya devam eder!
 
+### Versiyon 1.3 Güncellemesi
+- **SKSE Menu Framework Oyun İçi Menü Desteği:** Mod ayarları artık oyun içindeki **SKSE Menu Framework** menüsü (ImGui) üzerinden canlı olarak değiştirilebilir! `General & Scaling`, `Enemy Toggles` ve `High Level Nerf` sekmeleri ile tüm ayarları oyun içerisinden anında yapılandırabilir ve kaydedebilirsiniz.
+
 ### Versiyon 1.2 Güncellemesi
 - **Yüksek Seviye Düşman Zayıflatması (Nerf Sistemi):** Dark Souls stili bir zorluk için, sizden çok yüksek seviyeli olan düşmanlar artık doğrudan tek atmıyor! Aranızdaki seviye farkına oranla hasarları ve zırhları INI dosyasından ayarlayabileceğiniz oranda (varsayılan olarak maks. %50'ye kadar) azaltılır. Böylece yüksek levelli düşmanları kesmek "imkansız" değil, tamamen "yetenek tabanlı" (dodge/block) bir mücadele haline gelir.
 - **Otomatik INI Oluşturma (Auto-generate INI):** Mod ilk kez çalıştığında (eğer yoksa) en güncel ayar dosyası olan `EvolutionOfTheEnemyNG.ini` dosyasını `Data/SKSE/Plugins/` dizininde (veya MO2 Overwrite klasöründe) **otomatik olarak kendisi oluşturur**.
@@ -135,6 +138,9 @@ With this mod:
 Skyrim's default enemy scaling system is restricted by Level Caps. For example, the strongest bandit type in the game, the "Bandit Marauder", is capped at level 25. Even if you are level 80, the game will at most spawn a level 25 bandit for you. This makes the late game incredibly easy and boring.
 
 **EoE NG** completely ignores these level caps. If you are level 80 and facing a level 25 bandit, the mod calculates the "55 level" difference and applies it as a **massive extra buff** to the bandit's health, damage, and stamina. Moreover, it distributes these stats intelligently based on the enemy's equipped weapon and class. Thus, even low-level enemies will continue to pose a threat to you, regardless of your level!
+
+### Version 1.3 Update
+- **SKSE Menu Framework In-Game UI Support:** Mod settings can now be dynamically configured live in-game via **SKSE Menu Framework** (ImGui)! Easily adjust `General & Scaling`, `Enemy Toggles`, and `High Level Nerf` options right from the in-game menu.
 
 ### Version 1.2 Update
 - **High Level Enemy Nerf System:** For a Dark Souls style experience, enemies that are much higher level than you will no longer one-shot you instantly! Based on the level difference, their damage and armor are proportionally nerfed (up to a max of 50%, configurable via INI). This makes fighting high-level enemies a "skill-based" (dodging/blocking) challenge rather than mathematically impossible.

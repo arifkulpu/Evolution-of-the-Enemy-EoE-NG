@@ -1,5 +1,6 @@
 #include "LevelSystem.h"
 #include "Settings.h"
+#include "Menu.h"
 
 #include <spdlog/sinks/basic_file_sink.h>
 
@@ -39,6 +40,7 @@ SKSEPluginLoad(const SKSE::LoadInterface *skse) {
     SKSE::GetMessagingInterface()->RegisterListener([](SKSE::MessagingInterface::Message* message) {
         if (message->type == SKSE::MessagingInterface::kDataLoaded) {
             LevelSystem::InstallHooks();
+            Menu::Register();
         }
     });
 

@@ -48,6 +48,7 @@ add_library(${PROJECT_NAME} SHARED
     src/main.cpp
     src/LevelSystem.cpp
     src/Settings.cpp
+    src/Menu.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE CommonLibSSE::CommonLibSSE)

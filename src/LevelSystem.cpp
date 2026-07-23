@@ -56,8 +56,26 @@ namespace LevelSystem
         float extraLevels = actorPtr->AsActorValueOwner()->GetActorValue(RE::ActorValue::kVariable10);
         uint16_t effectiveLevel = npcLevel + static_cast<uint16_t>(extraLevels);
 
-        if (effectiveLevel >= playerLevel) return;
+        auto avOwner = actorPtr->AsActorValueOwner();
+        float nerfApplied = avOwner->GetActorValue(RE::ActorValue::kVariable09);
 
+        if (effectiveLevel > playerLevel) {
+            if (settings->bEnableHighLevelNerf && nerfApplied == 0.0f) {
+                uint16_t levelDiff = effectiveLevel - playerLevel;
+                
+                float damageNerf = std::min(levelDiff * settings->fNerfDamagePerLevel, settings->fMaxNerfLimit);
+                float armorNerf = levelDiff * settings->fNerfArmorPerLevel;
+                
+                avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kAttackDamageMult, -damageNerf);
+                avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kDestructionPowerModifier, -damageNerf);
+                avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kDamageResist, -armorNerf);
+                
+                avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kVariable09, 1.0f);
+            }
+            return;
+        } else if (effectiveLevel == playerLevel) {
+            return;
+        }
         uint16_t levelDiff = playerLevel - effectiveLevel;
         enum class NPCRole {
             ShieldTank,
@@ -260,7 +278,7 @@ namespace LevelSystem
         float finalAttackDamageGain = resistGain * attackDamageGain;
         float finalSpellPowerGain = resistGain * spellPowerGain;
 
-        auto avOwner = actorPtr->AsActorValueOwner();
+        // avOwner already declared
         
         // Mod Stats
         avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kHealth, finalHealthGain);
