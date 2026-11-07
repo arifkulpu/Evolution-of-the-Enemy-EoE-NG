@@ -1,6 +1,7 @@
 #include "LevelSystem.h"
 #include "Settings.h"
 #include <random>
+#include <algorithm>
 
 namespace LevelSystem
 {
@@ -8,6 +9,92 @@ namespace LevelSystem
     static std::mt19937& GetRNG() {
         static std::mt19937 rng(std::random_device{}());
         return rng;
+    }
+
+    // ------------------------------------------------------------------
+    // Level Variance (isteğe bağlı)
+    // ------------------------------------------------------------------
+    // Her düşmana kalıcı bir rastgele seviye sapması (delta) verilir ve NPC,
+    // oyuncu seviyesi yerine "hedef seviye = oyuncu seviyesi + delta" değerine
+    // ölçeklenir. Delta kayıtlı oyunda kalıcı olsun diye kVariable08 içinde
+    // (delta + 100) olarak saklanır; 0 = henüz atanmadı.
+    constexpr int kVarianceStoredOffset = 100;
+
+    static int GetOrRollVarianceDelta(RE::Actor* actor, const Settings* settings)
+    {
+        auto avOwner = actor->AsActorValueOwner();
+        float stored = avOwner->GetActorValue(RE::ActorValue::kVariable08);
+        if (stored >= 1.0f) {
+            return static_cast<int>(stored) - kVarianceStoredOffset;
+        }
+
+        int lo = std::clamp(std::min(settings->iVarianceMin, settings->iVarianceMax), -99, 99);
+        int hi = std::clamp(std::max(settings->iVarianceMin, settings->iVarianceMax), -99, 99);
+        std::uniform_int_distribution<int> dist(lo, hi);
+        int delta = dist(GetRNG());
+
+        avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kVariable08,
+                                   static_cast<float>(delta + kVarianceStoredOffset));
+        return delta;
+    }
+
+    // Encounter zone min/max değerlerini okur. 0 = tanımsız / sınır yok.
+    // NOT: Aşağıdaki CommonLibSSE-NG çağrıları (ExtraEncounterZone, BGSEncounterZone::data)
+    // derleyicide farklı isimdeyse burada düzeltilmesi gerekir.
+    static bool GetEncounterZoneRange(RE::Actor* actor, int& outMin, int& outMax)
+    {
+        outMin = 0;
+        outMax = 0;
+
+        RE::BGSEncounterZone* zone = nullptr;
+        if (auto extra = actor->extraList.GetByType<RE::ExtraEncounterZone>()) {
+            zone = extra->zone;
+        }
+        if (!zone) {
+            if (auto cell = actor->GetParentCell()) {
+                if (auto extra = cell->extraList.GetByType<RE::ExtraEncounterZone>()) {
+                    zone = extra->zone;
+                }
+            }
+        }
+        if (!zone) return false;
+
+        outMin = static_cast<int>(zone->data.minLevel);
+        outMax = static_cast<int>(zone->data.maxLevel);
+        return true;
+    }
+
+    // NPC'nin ölçekleneceği hedef seviyeyi hesaplar.
+    // Varyans kapalıysa tam olarak oyuncu seviyesini döndürür (eski davranış).
+    static uint16_t ComputeTargetLevel(RE::Actor* actor, uint16_t npcLevel, uint16_t playerLevel, const Settings* settings)
+    {
+        if (!settings->bEnableLevelVariance) return playerLevel;
+
+        const bool lowLevelPlayer = settings->bLowLevelProtection && playerLevel < settings->iLowLevelThreshold;
+
+        // Düşük seviye oyuncu koruması: güçlü düşmanlar rastgeleleştirilmez
+        if (lowLevelPlayer && npcLevel >= settings->iLowLevelEnemyCap) return playerLevel;
+
+        int target = static_cast<int>(playerLevel) + GetOrRollVarianceDelta(actor, settings);
+
+        // Oyuncu tabanı: oyuncu seviyesi - X (yalnızca oyuncu seviyesi > X iken)
+        if (settings->bUsePlayerLevelFloor && playerLevel > settings->iPlayerFloorOffset) {
+            target = std::max(target, static_cast<int>(playerLevel) - settings->iPlayerFloorOffset);
+        }
+
+        // Encounter zone sıkıştırması (max yalnızca bölgede gerçekten tanımlıysa)
+        if (settings->bClampToEncounterZone) {
+            int ezMin = 0, ezMax = 0;
+            if (GetEncounterZoneRange(actor, ezMin, ezMax)) {
+                if (ezMin > 0) target = std::max(target, ezMin);
+                if (ezMax > 0) target = std::min(target, ezMax);
+            }
+        }
+
+        // Düşük seviye oyuncu: rastgeleleşen düşmanlar tavanla sınırlı
+        if (lowLevelPlayer) target = std::min(target, settings->iLowLevelEnemyCap);
+
+        return static_cast<uint16_t>(std::max(target, 1));
     }
 
     // Tek bir NPC'yi günceller
@@ -56,12 +143,15 @@ namespace LevelSystem
         float extraLevels = actorPtr->AsActorValueOwner()->GetActorValue(RE::ActorValue::kVariable10);
         uint16_t effectiveLevel = npcLevel + static_cast<uint16_t>(extraLevels);
 
+        // Ölçekleneceği hedef seviye (varyans kapalıysa = oyuncu seviyesi)
+        const uint16_t targetLevel = ComputeTargetLevel(actorPtr, npcLevel, playerLevel, settings);
+
         auto avOwner = actorPtr->AsActorValueOwner();
         float nerfApplied = avOwner->GetActorValue(RE::ActorValue::kVariable09);
 
-        if (effectiveLevel > playerLevel) {
+        if (effectiveLevel > targetLevel) {
             if (settings->bEnableHighLevelNerf && nerfApplied == 0.0f) {
-                uint16_t levelDiff = effectiveLevel - playerLevel;
+                uint16_t levelDiff = effectiveLevel - targetLevel;
                 
                 float damageNerf = std::min(levelDiff * settings->fNerfDamagePerLevel, settings->fMaxNerfLimit);
                 float armorNerf = levelDiff * settings->fNerfArmorPerLevel;
@@ -73,10 +163,10 @@ namespace LevelSystem
                 avOwner->RestoreActorValue(RE::ACTOR_VALUE_MODIFIER::kPermanent, RE::ActorValue::kVariable09, 1.0f);
             }
             return;
-        } else if (effectiveLevel == playerLevel) {
+        } else if (effectiveLevel == targetLevel) {
             return;
         }
-        uint16_t levelDiff = playerLevel - effectiveLevel;
+        uint16_t levelDiff = targetLevel - effectiveLevel;
         enum class NPCRole {
             ShieldTank,
             DualWield,

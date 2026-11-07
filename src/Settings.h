@@ -50,6 +50,18 @@ public:
     float fNerfArmorPerLevel{2.0f};
     float fMaxNerfLimit{0.50f};
 
+    // Level Variance (optional): each enemy gets a persistent random offset applied
+    // to the TARGET level it is scaled to (default: player level).
+    bool bEnableLevelVariance{false};
+    int iVarianceMin{-5};
+    int iVarianceMax{5};
+    bool bClampToEncounterZone{false};   // clamp target level to the encounter zone min/max (max only if zone has one)
+    bool bUsePlayerLevelFloor{false};    // target level >= playerLevel - iPlayerFloorOffset (only when player level > offset)
+    int iPlayerFloorOffset{10};
+    bool bLowLevelProtection{true};      // player level < iLowLevelThreshold: strong enemies skip variance, others capped
+    int iLowLevelThreshold{5};
+    int iLowLevelEnemyCap{10};
+
 private:
     Settings() = default;
     ~Settings() = default;

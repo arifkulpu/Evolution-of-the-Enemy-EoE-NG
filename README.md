@@ -18,6 +18,13 @@ Skyrim'in varsayılan düşman seviye sistemi (Vanilla Scaling) seviye sınırla
 
 **EoE NG** ise bu seviye sınırlarını tamamen yok sayar. Eğer siz Level 80 iseniz ve karşınızda Level 25 bir haydut varsa, modumuz aradaki "55 level" farkını hesaplar ve bu farkı haydutun canına, hasarına ve dayanıklılığına **ekstra buff olarak ekler**. Üstelik bu işlemi, haydutun elindeki silaha ve sınıfına göre son derece mantıklı ve dengeli bir şekilde yapar. Böylece düşük seviyeli düşmanlar bile, seviyeniz kaç olursa olsun sizin için her zaman bir tehdit oluşturmaya devam eder!
 
+### Versiyon 1.4 Güncellemesi
+- **Level Variance (Düşman Seviye Çeşitliliği/Sapması):** Düşmanlar artık doğrudan sadece oyuncu seviyesine kilitlenmek zorunda değil. Her düşmana kalıcı ve rastgele bir seviye sapması (`delta`) atanabilir (`hedef seviye = oyuncu seviyesi + sapma`).
+- **Kalıcı Değer Saklama:** Her düşmanın sapma değeri kayıt dosyasına (save) kaydedilir; oyun yükleme ve hücre geçişlerinde aynı düşmanın seviyesi tutarlı kalır.
+- **Encounter Zone ve Taban Seviye Desteği:** İsteğe bağlı olarak seviye sınırları bölgeye (Encounter Zone) göre kısıtlanabilir veya oyuncunun belirli bir seviye altına inmemesi için taban seviye (`playerLevel - offset`) belirlenebilir.
+- **Düşük Seviye Oyuncu Koruması:** Düşük seviyedeki oyuncuların (`< threshold`) oyun başında çok güçlü yaratıklarla karşılaşıp ezilmesini önleyen akıllı koruma sınırı.
+- **Canlı Menü Desteği:** SKSE Menu Framework menüsüne yeni "Level Variance" sekmesi eklendi.
+
 ### Versiyon 1.3 Güncellemesi
 - **SKSE Menu Framework Oyun İçi Menü Desteği:** Mod ayarları artık oyun içindeki **SKSE Menu Framework** menüsü (ImGui) üzerinden canlı olarak değiştirilebilir! `General & Scaling`, `Enemy Toggles` ve `High Level Nerf` sekmeleri ile tüm ayarları oyun içerisinden anında yapılandırabilir ve kaydedebilirsiniz.
 
@@ -138,6 +145,13 @@ With this mod:
 Skyrim's default enemy scaling system is restricted by Level Caps. For example, the strongest bandit type in the game, the "Bandit Marauder", is capped at level 25. Even if you are level 80, the game will at most spawn a level 25 bandit for you. This makes the late game incredibly easy and boring.
 
 **EoE NG** completely ignores these level caps. If you are level 80 and facing a level 25 bandit, the mod calculates the "55 level" difference and applies it as a **massive extra buff** to the bandit's health, damage, and stamina. Moreover, it distributes these stats intelligently based on the enemy's equipped weapon and class. Thus, even low-level enemies will continue to pose a threat to you, regardless of your level!
+
+### Version 1.4 Update
+- **Level Variance (Enemy Level Variety/Offset):** Enemies no longer have to scale strictly to the exact player level. Each enemy can receive a permanent, random level offset (`delta`), setting target level to `player level + offset`.
+- **Persistent Offset Storage:** Variance offsets are preserved across saves and cell changes using internal actor values.
+- **Encounter Zone & Player Floor Clamping:** Optional settings to clamp target levels to Encounter Zone bounds, or enforce a minimum floor relative to player level.
+- **Low Level Player Protection:** Protects low level players from overwhelming high level variants with configurable threshold and enemy cap.
+- **In-Game Menu Integration:** Added a "Level Variance" tab to SKSE Menu Framework for real-time configuration.
 
 ### Version 1.3 Update
 - **SKSE Menu Framework In-Game UI Support:** Mod settings can now be dynamically configured live in-game via **SKSE Menu Framework** (ImGui)! Easily adjust `General & Scaling`, `Enemy Toggles`, and `High Level Nerf` options right from the in-game menu.

@@ -68,7 +68,18 @@ void Settings::Save()
     file << "bEnableHighLevelNerf = " << (bEnableHighLevelNerf ? "1" : "0") << "\n";
     file << "fNerfDamagePerLevel = " << fNerfDamagePerLevel << "\n";
     file << "fNerfArmorPerLevel = " << fNerfArmorPerLevel << "\n";
-    file << "fMaxNerfLimit = " << fMaxNerfLimit << "\n";
+    file << "fMaxNerfLimit = " << fMaxNerfLimit << "\n\n";
+
+    file << "[LevelVariance]\n";
+    file << "bEnableLevelVariance = " << (bEnableLevelVariance ? "1" : "0") << "\n";
+    file << "iVarianceMin = " << iVarianceMin << "\n";
+    file << "iVarianceMax = " << iVarianceMax << "\n";
+    file << "bClampToEncounterZone = " << (bClampToEncounterZone ? "1" : "0") << "\n";
+    file << "bUsePlayerLevelFloor = " << (bUsePlayerLevelFloor ? "1" : "0") << "\n";
+    file << "iPlayerFloorOffset = " << iPlayerFloorOffset << "\n";
+    file << "bLowLevelProtection = " << (bLowLevelProtection ? "1" : "0") << "\n";
+    file << "iLowLevelThreshold = " << iLowLevelThreshold << "\n";
+    file << "iLowLevelEnemyCap = " << iLowLevelEnemyCap << "\n";
 
     file.close();
     SKSE::log::info("Default INI file created successfully!");
@@ -119,6 +130,15 @@ void Settings::ParseLine(const std::string& line)
         else if (key == "fNerfDamagePerLevel") fNerfDamagePerLevel = std::stof(valStr);
         else if (key == "fNerfArmorPerLevel") fNerfArmorPerLevel = std::stof(valStr);
         else if (key == "fMaxNerfLimit") fMaxNerfLimit = std::stof(valStr);
+        else if (key == "bEnableLevelVariance") bEnableLevelVariance = (std::stoi(valStr) != 0);
+        else if (key == "iVarianceMin") iVarianceMin = std::stoi(valStr);
+        else if (key == "iVarianceMax") iVarianceMax = std::stoi(valStr);
+        else if (key == "bClampToEncounterZone") bClampToEncounterZone = (std::stoi(valStr) != 0);
+        else if (key == "bUsePlayerLevelFloor") bUsePlayerLevelFloor = (std::stoi(valStr) != 0);
+        else if (key == "iPlayerFloorOffset") iPlayerFloorOffset = std::stoi(valStr);
+        else if (key == "bLowLevelProtection") bLowLevelProtection = (std::stoi(valStr) != 0);
+        else if (key == "iLowLevelThreshold") iLowLevelThreshold = std::stoi(valStr);
+        else if (key == "iLowLevelEnemyCap") iLowLevelEnemyCap = std::stoi(valStr);
     } catch (...) {
         SKSE::log::warn("Failed to parse setting: {} = {}", key, valStr);
     }
